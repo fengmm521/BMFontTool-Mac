@@ -17,6 +17,8 @@ x = 0x6625
 print x
 x = 0x5023
 print x
+print '%d编码的中文是:%s'%(x,unichr(x).encode('utf-8'))
+
 
 a = u'我'
 tnu = repr(a)

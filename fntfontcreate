@@ -1,0 +1,16 @@
+#!/bin/bash
+export PATH=$PATH
+echo "图片转fnt字体"
+# adb logcat -f /data/local/tmp/log.txt -n 10 -r 1
+# adb pull /data/local/tmp/log.txt /Users/junpengzhang/Desktop/log.txt
+# 使用-d参数，可以在读完所有log后返回，而不会一直等待，在自动化较有用。例如：
+# adb logcat -d -s xxx > xxx.log //得到filter为xxx的日志，存入xxx.log，然后返回。
+if [[ $1 ]]; then
+	python FntFontCreate.py $1
+elif [[ $1 ]] && [[ $2 ]]; then
+	#statements
+	python FntFontCreate.py $1 $2
+else
+	echo "请输入图片文字目录"
+fi
+
