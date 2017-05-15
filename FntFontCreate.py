@@ -145,7 +145,7 @@ if __name__ == '__main__':
 # tmp = [u'零',u'一',u'二',u'三',u'四',u'五',u'六',u'七',u'八',u'九']
 # for x in tmp:
 # 	print repr(x) + ':%s'%(x.encode('utf-8'))
-x = 0x6625
-print repr(x)
-print str(x)
+# 编码转文字
+# x = 0x6625
+# print unichr(x).encode('utf-8')
 
