@@ -57,21 +57,58 @@ def getAllExtFile(pth,fromatx = ".erl"):
                 jsonfilelist.append(jsonArr)
     return jsonfilelist
 
+def getAllLevelDirs(dirpths):
+    dirleves = []
+    dirtmp = ''
+    for d in dirpths:
+        dirtmp += '/' + d
+        dirleves.append(dirtmp)
+    return dirleves
+
+#创建ftp服务器目录，是否使用服务器决对路径
+def makeDir(outpth,ndir,isTruePath = False):
+    tmpdir = ''
+    if ndir[0] == '/':
+        tmpdir = outpth + ndir
+    else:
+        tmpdir = outpth + '/' + ndir
+    print tmpdir
+    if not os.path.exists(tmpdir):
+        os.mkdir(tmpdir)
+
+# 创建一个目录下的所有子目录到另一个目录
+def createDirs(spth,tpth):
+    files = getAllExtFile(spth,'.*')
+    makedirstmp = []
+    isOK = True
+    # 分析所有要创建的目录
+    tmpfpth = fpth
+    for d in files:
+        if d[1] != '/' and (not d[1] in makedirstmp): #创建未创建的目录层级
+            tmpdir = d[1][1:]
+            tmpleves = tmpdir.split('/')
+            alldirs = getAllLevelDirs(tmpleves)
+            for dtmp in alldirs:
+                if not dtmp in makedirstmp:
+                    makeDir(tpth,dtmp)
+                    makedirstmp.append(dtmp)
+
 def conventImgFromPng8ToPng24(imgPth,outPth):
-	img = Image.open(imgPth)
-	outimg = img.convert("RGBA")
-	outimg.save(outPth)
+    img = Image.open(imgPth)
+    outimg = img.convert("RGBA")
+    outimg.save(outPth)
 
 def main(fpth,outPth):
-	if os.path.exists(outPth):
-		shutil.rmtree(outPth)
-	os.mkdir(outPth)
-	imgpths = getAllExtFile(fpth,".png")
-	print imgpths
-	for p in imgpths:
-		ipth = fpth + p[0]
-		opth = outPth + os.sep + p[0]
-		conventImgFromPng8ToPng24(ipth, opth)
+    if os.path.exists(outPth):
+        shutil.rmtree(outPth)
+    os.mkdir(outPth)
+    createDirs(fpth,outPth)
+    imgpths = getAllExtFile(fpth,".png")
+    print imgpths
+    for p in imgpths:
+      ipth = fpth + p[0]
+      opth = outPth + os.sep + p[0]
+      conventImgFromPng8ToPng24(ipth, opth)
 
 if __name__ == '__main__':
     args = sys.argv
@@ -87,10 +124,10 @@ if __name__ == '__main__':
         outName = args[2]
         
     else:
-    	print '参数错误'
+        print '参数错误'
     print fpth
     print outName
     if fpth == '':
-    	main('numberImage','png24out')
+        main('numberImage','png24out')
     else:
-    	main(fpth,outName)
+        main(fpth,outName)
