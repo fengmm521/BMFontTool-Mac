@@ -193,11 +193,15 @@ def createNewImage(w,h):
     return nimg
 
 #复制一张图到大图中,box为小图在大图中的坐标，要求小图的box大小正好等于要帖贴的小图大小
-def copyImgToOutImg(bigimg,inputimg,point):
+def copyImgToOutImg(bigimg,inputimg,topoint,inputRact):
     x = point[0]
     y = point[1]
-    box = (0,0,inputimg.size[0],inputimg.size[1])
-    offset = (x,y,x + inputimg.size[0], y + inputimg.size[1])
+    imgx = inputRact['x']
+    imgy = inputRact['y']
+    imgw = inputRact['width']
+    imgh = inputRact['height']
+    box = (imgx,imgy,imgx + imgw,imgy + imgh)
+    offset = (x,y,x + imgw, y + imgh)
     region = inputimg.crop(box)
     bigimg.paste(region, offset)
 
@@ -218,9 +222,7 @@ def calculateImagesPoint(imgSizeDics,isNoAlph = True):
     imgWList = sorted(imgSizeDics.iteritems(), key=lambda d:d[1]['width'], reverse = True)       #图片按宽度从大到小排序
     imgHList = sorted(imgSizeDics.iteritems(), key=lambda d:d[1]['height'], reverse = True)       #图片按长度从大到小排序
 
-    imgOKList = []      #已放入大图中的图片列表
     print '总面积:',totalArea
-    
     print 128*256
     print '面积排序'
     print imgAreasList
@@ -232,6 +234,19 @@ def calculateImagesPoint(imgSizeDics,isNoAlph = True):
     weage,heage,w2,h2 = getBigWidthAndHeightWithArea(totalArea, imgWList[0][1]['width'], imgHList[0][1]['height'])
     print weage,heage,w2,h2
 
+    imgAreaNames = [] #按面积排序的图片名
+    for x in imgAreasList:
+        imgAreaNames.append(x[0])
+    imgWNames = []      #按宽度排序的图片名
+    for x2 in imgWList:
+        imgWNames.append(x2[0])
+    imgHNames = []      #按高度排序的图片名
+    for x3 in imgHList:
+        imgHNames.append(x3[0])
+
+    imgOKList = []      #已放入大图中的图片列表
+
+    # bigimg = createNewImage(weage,heage)
 
 
 def combinationImages(imgdicpths):
