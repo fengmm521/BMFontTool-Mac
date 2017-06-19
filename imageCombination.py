@@ -218,9 +218,9 @@ def calculateImagesPoint(imgSizeDics,isNoAlph = True):
         imgAreas[k] = tmpArea
         totalArea += tmpArea
 
-    imgAreasList = sorted(imgAreas.iteritems(), key=lambda d:d[1], reverse = True)        #图片按面积从大到小排序
-    imgWList = sorted(imgSizeDics.iteritems(), key=lambda d:d[1]['width'], reverse = True)       #图片按宽度从大到小排序
-    imgHList = sorted(imgSizeDics.iteritems(), key=lambda d:d[1]['height'], reverse = True)       #图片按长度从大到小排序
+    imgAreasList = sorted(imgAreas.iteritems(), key=lambda d:d[1], reverse = False)        #图片按面积从小到大排序
+    imgWList = sorted(imgSizeDics.iteritems(), key=lambda d:d[1]['width'], reverse = False)       #图片按宽度从小到大排序
+    imgHList = sorted(imgSizeDics.iteritems(), key=lambda d:d[1]['height'], reverse = False)       #图片按长度从小到大排序
 
     print '总面积:',totalArea
     print 128*256
@@ -246,6 +246,11 @@ def calculateImagesPoint(imgSizeDics,isNoAlph = True):
 
     imgOKList = []      #已放入大图中的图片列表
 
+    while len(imgAreaNames) > 0:
+        imgArea1 = imgAreaNames.pop()  #最大图
+        imgW1 = imgWNames.pop()        #最宽图
+        imgH1 = imgHNames.pop()        #最长图
+        
     # bigimg = createNewImage(weage,heage)
 
 
